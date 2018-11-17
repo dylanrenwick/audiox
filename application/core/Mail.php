@@ -65,7 +65,9 @@ class Mail
             $mail->IsSMTP();
 
             // 0 = off, 1 = commands, 2 = commands and data, perfect to see SMTP errors
-            $mail->SMTPDebug = 0;
+            $mail->SMTPDebug = 2;
+            echo "Setting debug";
+            $mail->Debugoutput = function($str, $level) { Session::add('feedback_debug', "$str"); };
 
             // enable SMTP authentication
             $mail->SMTPAuth = Config::get('EMAIL_SMTP_AUTH');
@@ -95,6 +97,7 @@ class Mail
 
         // try to send mail, put result status (true/false into $wasSendingSuccessful)
         // I'm unsure if mail->send really returns true or false every time, tis method in PHPMailer is quite complex
+        echo "Sending...";
         $wasSendingSuccessful = $mail->Send();
 
         if ($wasSendingSuccessful) {
