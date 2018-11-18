@@ -139,6 +139,8 @@ class Mail
         if (Config::get('EMAIL_USED_MAILER') == "native") {
             return $this->sendMailWithNativeMailFunction();
         }
+
+        return false;
     }
 
     /**
