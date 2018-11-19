@@ -41,11 +41,11 @@ class Mail
      * Make sure you have loaded PHPMailer via Composer.
      * Depending on your EMAIL_USE_SMTP setting this will work via SMTP credentials or via native mail()
      *
-     * @param $user_email
-     * @param $from_email
-     * @param $from_name
-     * @param $subject
-     * @param $body
+     * @param string $user_email
+     * @param string $from_email
+     * @param string $from_name
+     * @param string $subject
+     * @param string $body
      *
      * @return bool
      * @throws Exception
@@ -115,11 +115,11 @@ class Mail
      * The main mail sending method, this simply calls a certain mail sending method depending on which mail provider
      * you've selected in the application's config.
      *
-     * @param $user_email string email
-     * @param $from_email string sender's email
-     * @param $from_name string sender's name
-     * @param $subject string subject
-     * @param $body string full mail body text
+     * @param string $user_email email
+     * @param string $from_email sender's email
+     * @param string $from_name sender's name
+     * @param string $subject subject
+     * @param string $body full mail body text
      * @return bool the success status of the according mail sending method
      */
     public function sendMail($user_email, $from_email, $from_name, $subject, $body)
