@@ -84,7 +84,7 @@ class Request
     public static function inUrl($index = null)
     {
         if ($index === null) return self::$inUrl;
-        else return ($index < count(self::$inUrl[$index]) ? self::$inUrl[$index] : false);
+        else return ($index < count(self::$inUrl) ? self::$inUrl[$index] : false);
     }
 
     /**
