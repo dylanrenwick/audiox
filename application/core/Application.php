@@ -35,7 +35,6 @@ class Application
         $controller_path = Config::get($this->is_api ? 'PATH_API' : 'PATH_CONTROLLER') . $this->controller_name . '.php';
         // does such a controller exist ?
         if (file_exists($controller_path)) {
-
             // load this file and create this controller
             // example: if controller would be "car", then this line would translate into: $this->car = new car();
             require $controller_path;
@@ -78,10 +77,7 @@ class Application
 
             // put URL parts into according properties
             $this->controller_name = isset($url[0]) ? array_shift($url) : null;
-            $this->action_name = isset($url[0]) ? $url : null;
-
-            // remove controller name and action name from the split URL
-            unset($url[0], $url[1]);
+            $this->action_name = isset($url[0]) ? array_shift($url) : null;
 
             // rebase array keys and store the URL parameters
             $this->parameters = array_values($url);
@@ -97,7 +93,9 @@ class Application
         // check for API request
         if ($this->controller_name === Config::get('API_ROOT')) {
             $this->is_api = true;
-            $this->controller_name = array_shift($this->action_name);
+            $this->controller_name = $this->action_name;
+            $this->action_name = Request::method();
+            Request::generateInUrlParams($this->parameters);
         }
         // check for controller: no controller given ? then make controller = default controller (from config)
         if (!$this->controller_name) {
@@ -105,10 +103,8 @@ class Application
         }
 
         // check for action: no action given ? then make action = default action (from config)
-        if (!$this->action_name OR (count($this->action_name) == 0)) {
+        if (!$this->action_name || (is_array($this->action_name) && count($this->action_name) == 0)) {
             $this->action_name = Config::get('DEFAULT_ACTION');
-        } else {
-            $this->action_name = $this->action_name[0];
         }
 
         // rename controller name to real controller class/file name ("index" to "IndexController")
