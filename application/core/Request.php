@@ -9,6 +9,9 @@
  */
 class Request
 {
+    /** @var array parameters passed as part of the URL */
+    private static $inUrl = array();
+
     /**
      * Gets/returns the value of a specific key of the POST super-global.
      * When using just Request::post('x') it will return the raw and untouched $_POST['x'], when using it like
@@ -60,5 +63,36 @@ class Request
         if (isset($_COOKIE[$key])) {
             return $_COOKIE[$key];
         }
+    }
+
+    /**
+     * creates in URL parameters from a part of a URL
+     * @param string|array $urlParts slash-delimited inUrl parameters or an array of parameters
+     */
+    public static function generateInUrlParams($urlParts)
+    {
+        if (is_string($urlParts)) $urlParts = explode('/', $urlParts);
+        foreach($urlParts as $part) self::$inUrl[] = $part;
+    }
+
+    /**
+     * gets/returns an array of inUrl parameters
+     * or a specific index if provided one
+     * @param int|null $index the index to return, or null to return all
+     * @return mixed
+     */
+    public static function inUrl($index = null)
+    {
+        if ($index === null) return self::$inUrl;
+        else return ($index < count(self::$inUrl[$index]) ? self::$inUrl[$index] : false);
+    }
+
+    /**
+     * gets/returns the method used for the current request
+     * @return string
+     */
+    public static function method()
+    {
+        return $_SERVER['REQUEST_METHOD'];
     }
 }
