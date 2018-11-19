@@ -11,32 +11,6 @@ class Mail
     private $error;
 
     /**
-     * Try to send a mail by using PHP's native mail() function.
-     * Please note that not PHP itself will send a mail, it's just a wrapper for Linux's sendmail or other mail tools
-     *
-     * Good guideline on how to send mails natively with mail():
-     * @see http://stackoverflow.com/a/24644450/1114320
-     * @see http://www.php.net/manual/en/function.mail.php
-     */
-    public function sendMailWithNativeMailFunction()
-    {
-        // no code yet, so we just return something to make IDEs and code analyzer tools happy
-        return false;
-    }
-
-    /**
-     * Try to send a mail by using SwiftMailer.
-     * Make sure you have loaded SwiftMailer via Composer.
-     *
-     * @return bool
-     */
-    public function sendMailWithSwiftMailer()
-    {
-        // no code yet, so we just return something to make IDEs and code analyzer tools happy
-        return false;
-    }
-
-    /**
      * Try to send a mail by using PHPMailer.
      * Make sure you have loaded PHPMailer via Composer.
      * Depending on your EMAIL_USE_SMTP setting this will work via SMTP credentials or via native mail()
@@ -124,23 +98,8 @@ class Mail
      */
     public function sendMail($user_email, $from_email, $from_name, $subject, $body)
     {
-        if (Config::get('EMAIL_USED_MAILER') == "phpmailer") {
-
-            // returns true if successful, false if not
-            return $this->sendMailWithPHPMailer(
-                $user_email, $from_email, $from_name, $subject, $body
-            );
-        }
-
-        if (Config::get('EMAIL_USED_MAILER') == "swiftmailer") {
-            return $this->sendMailWithSwiftMailer();
-        }
-
-        if (Config::get('EMAIL_USED_MAILER') == "native") {
-            return $this->sendMailWithNativeMailFunction();
-        }
-
-        return false;
+        // returns true if successful, false if not
+        return $this->sendMailWithPHPMailer($user_email, $from_email, $from_name, $subject, $body);
     }
 
     /**
