@@ -4,17 +4,11 @@ class Text
 {
     private static $texts;
 
-    public static function get($key, $data = null)
+    public static function get($key)
     {
         // if not $key
         if (!$key) {
             return null;
-        }
-
-        if ($data) {
-            foreach ($data as $var => $value) {
-                ${$var} = $value;
-            }
         }
 
         // load config file (this is only done once per application lifecycle)
