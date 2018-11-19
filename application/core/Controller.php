@@ -20,7 +20,7 @@ class Controller
     public function __construct($allow_oauth = false)
     {
         // always initialize a session
-        Session::init($allowOAuth);
+        Session::init($allow_oauth);
 
         // check session concurrency
         Auth::checkSessionConcurrency();
