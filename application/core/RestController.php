@@ -23,7 +23,6 @@ class RestController extends Controller
     /**
      * Returns an array of implemented HTTP request methods.
      * Child classes should implement methods by defining a function with the name of the method
-     * 
      * @return array
      */
     public function getSupportedMethods()
@@ -38,5 +37,42 @@ class RestController extends Controller
             }
         }
         return $availableActions;
+    }
+
+    /**
+     * Outputs a JSON encoded error with the given errorCode and message
+     * @param int $errorCode The code of the error
+     * @param string $message The description of the error, left blank for default message
+     * @param bool $append Whether to append the given message to the default message
+     */
+    public function error($errorCode, $message = '', $append = true)
+    {
+        // Default error messages for each error code
+        $defaultMessages = array(
+            0 => 'An unknown error has occurred',
+            1 => 'You are not authorized to perform this action.',
+            2 => 'You are attempting to access the API using a banned authentication token.',
+            3 => 'You are attempting to access the API from a banned IP address.',
+            4 => 'Missing parameters!',
+            5 => 'Content not found!'
+        );
+
+        if (empty($message)) {
+            if (isset($defaultMessages[$errorCode])) {
+                $message = $defaultMessages[$errorCode];
+            } else {
+                $message = $defaultMessages[0];
+            }
+        } else if ($append) {
+            if (isset($defaultMessages[$errorCode])) {
+                $message = $defaultMessages[$errorCode] . ' ' . $message;
+            }
+        }
+
+        $error = array(
+            'errorCode' => $errorCode,
+            'message' => $message
+        );
+        echo json_encode($error);
     }
 }
