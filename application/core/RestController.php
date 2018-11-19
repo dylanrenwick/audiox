@@ -14,7 +14,9 @@ class RestController extends Controller
      */
     public function __construct()
     {
+        // Initialize base class with OAuth support
         parent::__construct(true);
+        // API endpoints will always return JSON
         header('Content-Type: application/json');
     }
 
@@ -26,9 +28,11 @@ class RestController extends Controller
      */
     public function getSupportedMethods()
     {
+        // Framework-supported HTTP methods
         $actions = array('HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'TRACE', 'OPTIONS', 'CONNECT', 'PATCH');
         $availableActions = array();
         foreach($actions as $action) {
+            // Check if method for HTTP method exists
             if (method_exists($this, $action)) {
                 $availableActions[] = $action;
             }
