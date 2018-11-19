@@ -64,4 +64,10 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('second', Request::inUrl(1));
         $this->assertEquals(null, Request::inUrl(99));
     }
+
+    public function testMethod()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $this->assertEquals('GET', Request::method());
+    }
 }
