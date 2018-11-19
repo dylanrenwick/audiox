@@ -52,4 +52,16 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(44, Request::cookie('test'));
         $this->assertEquals(null, Request::cookie('not_existing_key'));
     }
+
+    /**
+     * Testing the inUrl() method of the Request class
+     */
+    public function testInUrl()
+    {
+        Request::generateInUrlParams(array('first', 'second'));
+        $this->assertEquals(array('first', 'second'), Request::inUrl());
+        $this->assertEquals('first', Request::inUrl(0));
+        $this->assertEquals('second', Request::inUrl(1));
+        $this->assertEquals(null, Request::inUrl(99));
+    }
 }
