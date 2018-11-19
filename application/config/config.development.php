@@ -34,12 +34,14 @@ return array(
      * URL manually. This should then look like 'http://192.168.33.44/' ! Note the slash in the end.
      */
     'URL' => 'http://' . $_SERVER['HTTP_HOST'] . str_replace('public', '', dirname($_SERVER['SCRIPT_NAME'])),
+	'API_ROOT' => 'api',
     /**
      * Configuration for: Folders
      * Usually there's no reason to change this.
      */
     'PATH_CONTROLLER' => realpath(dirname(__FILE__).'/../../') . '/application/controller/',
     'PATH_VIEW' => realpath(dirname(__FILE__).'/../../') . '/application/view/',
+	'PATH_API' => realpath(dirname(__FILE__).'/../../') . '/application/controller/api/',
     /**
      * Configuration for: Avatar paths
      * Internal path to save avatars. Make sure this folder is writable. The slash at the end is VERY important!
