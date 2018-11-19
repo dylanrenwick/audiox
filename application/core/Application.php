@@ -18,6 +18,9 @@ class Application
     /** @var string Just the name of the controller's method, useful for checks inside the view ("where am I ?") */
     private $action_name;
 
+    /** @var bool Whether the request was to an API controller */
+    private $is_api;
+
     /**
      * Start the application, analyze URL elements, call according controller/method or relocate to fallback location
      */
@@ -29,12 +32,13 @@ class Application
         // creates controller and action names (from URL input)
         $this->createControllerAndActionNames();
 
+        $controller_path = Config::get($this->is_api ? 'PATH_API' : 'PATH_CONTROLLER') . $this->controller_name . '.php';
         // does such a controller exist ?
-        if (file_exists(Config::get('PATH_CONTROLLER') . $this->controller_name . '.php')) {
+        if (file_exists($controller_path)) {
 
             // load this file and create this controller
             // example: if controller would be "car", then this line would translate into: $this->car = new car();
-            require Config::get('PATH_CONTROLLER') . $this->controller_name . '.php';
+            require $controller_path;
             $this->controller = new $this->controller_name();
 
             // check for method: does such a method exist in the controller ?
@@ -73,8 +77,8 @@ class Application
             $url = explode('/', $url);
 
             // put URL parts into according properties
-            $this->controller_name = isset($url[0]) ? $url[0] : null;
-            $this->action_name = isset($url[1]) ? $url[1] : null;
+            $this->controller_name = isset($url[0]) ? array_shift($url) : null;
+            $this->action_name = isset($url[0]) ? $url : null;
 
             // remove controller name and action name from the split URL
             unset($url[0], $url[1]);
@@ -90,17 +94,24 @@ class Application
      */
     private function createControllerAndActionNames()
     {
+        // check for API request
+        if ($this->controller_name === Config::get('API_ROOT')) {
+            $this->is_api = true;
+            $this->controller_name = array_shift($this->action_name);
+        }
         // check for controller: no controller given ? then make controller = default controller (from config)
         if (!$this->controller_name) {
             $this->controller_name = Config::get('DEFAULT_CONTROLLER');
         }
 
         // check for action: no action given ? then make action = default action (from config)
-        if (!$this->action_name OR (strlen($this->action_name) == 0)) {
+        if (!$this->action_name OR (count($this->action_name) == 0)) {
             $this->action_name = Config::get('DEFAULT_ACTION');
+        } else {
+            $this->action_name = $this->action_name[0];
         }
 
         // rename controller name to real controller class/file name ("index" to "IndexController")
-        $this->controller_name = ucwords($this->controller_name) . 'Controller';
+        $this->controller_name = ucwords($this->controller_name) . ($this->is_api ? 'Api' : '') . 'Controller';
     }
 }
