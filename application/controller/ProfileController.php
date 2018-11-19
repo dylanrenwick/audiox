@@ -11,7 +11,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * This method controls what happens when you move to /overview/index in your app.
+     * This method controls what happens when you move to /profile/index in your app.
      * Shows a list of all users.
      */
     public function index()
@@ -22,7 +22,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * This method controls what happens when you move to /overview/showProfile in your app.
+     * This method controls what happens when you move to /profile/showProfile in your app.
      * Shows the (public) details of the selected user.
      * @param $user_id int id the the user
      */
